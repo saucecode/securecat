@@ -123,8 +123,10 @@ int main(){
 	WINDOW* topWindow = create_newwin(3,COLS,0,0);
 	//catWindow = create_newwin(LINES-6,COLS,3,0);
 	chatWindow = create_newwin(LINES-6,COLS,3,0);
-	WINDOW* inputWindow = create_newwin(3,COLS,LINES-3,0);
+	WINDOW* inputOuter = create_newwin(3,COLS,LINES-3,0);
+	WINDOW* inputWindow = subwin(inputOuter, 1, COLS-2, LINES-2, 1);
 	scrollok(chatWindow, TRUE);
+	scrollok(inputWindow, TRUE);
 	
 	wmove(topWindow, 1,1);
 	wprintw(topWindow, serverIP);
@@ -136,10 +138,9 @@ int main(){
 	
 	while(1){
 		int ch = getch();
-		wmove(inputWindow, 1,1);
-		for(int i=0; i<COLS-2; i++) wprintw(inputWindow, " ");
-		wmove(inputWindow, 1,1);
-		wprintw(inputWindow, currentLine);
+		mvwprintw(inputWindow, 0, 0, currentLine);
+		wclrtoeol(inputWindow);
+
 		if(ch != ERR){
 			if((ch == 127 || ch == 8) && strlen(currentLine) != 0){
 				memset(currentLine + strlen(currentLine)-1, '\0', 1);
