@@ -27,7 +27,8 @@ void printLog(){
 	wmove(chatWindow,1,2);
 	for(int i=31; i>=0; i--){
 		wprintw(chatWindow, chatLog[i]);
-		wprintw(chatWindow, "\n");
+		if (i > 0) // all lines except last
+			wprintw(chatWindow, "\n");
 	}
 	
 	wrefresh(chatWindow);
@@ -122,7 +123,8 @@ int main(){
 	
 	WINDOW* topWindow = create_newwin(3,COLS,0,0);
 	//catWindow = create_newwin(LINES-6,COLS,3,0);
-	chatWindow = create_newwin(LINES-6,COLS,3,0);
+	WINDOW* chatOuter = create_newwin(LINES-6,COLS,3,0);
+	chatWindow = subwin(chatOuter, LINES-8, COLS-2, 4, 1);
 	WINDOW* inputOuter = create_newwin(3,COLS,LINES-3,0);
 	WINDOW* inputWindow = subwin(inputOuter, 1, COLS-2, LINES-2, 1);
 	scrollok(chatWindow, TRUE);
